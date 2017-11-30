@@ -1,0 +1,60 @@
+#include <stdio.h>
+#include <malloc.h>
+#include <string.h>
+
+#define MAX 100
+
+int main(void)      //后缀表达式求值
+{
+    int i, j = 0, temp;
+    char arr[MAX];    //arr[]用来存储后缀表达式
+    int stack[MAX];    //栈
+
+    /*输入一个后缀表达式*/
+    printf("请输入一个后缀表达式:\n");
+    scanf("%s", arr);
+    /*for (i = 0; i < MAX; i++)
+    {
+        scanf("%c", &arr[i]);
+    }*/
+
+    /*后缀表达式求值*/
+    for (i = 0; arr[i] != '='; i++)
+    {
+        if ((arr[i] >= '0') && (arr[i] <= '9'))
+        {
+            stack[j++] = arr[i] - '0';  //arr[i]为数字则将其存储在stack[]数组中
+        }
+        else     //arr[i]若为运算符则同前两个数字一起运算
+        {
+            switch (arr[i])
+            {
+            case '+':
+                temp =stack[j - 2] +stack[j - 1];
+                j = j - 2;
+                stack[j++] = temp;
+                break;
+            case '-':
+                temp =stack[j - 2] -stack[j - 1];
+                j = j - 2;
+                stack[j++] = temp;
+                break;
+            case '*':
+                temp =stack[j - 2] *stack[j - 1];
+                j = j - 2;
+                stack[j++] = temp;
+                break;
+            case '/':
+                temp =stack[j - 2] /stack[j - 1];
+                j = j - 2;
+                stack[j++] = temp;
+                break;
+            }
+        }
+    }
+    
+    
+    printf("该表达式的值为: %d\n",stack[j - 1]);    
+
+    return 0;
+}
