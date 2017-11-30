@@ -1,0 +1,61 @@
+#include <stdio.h>
+#include <malloc.h>
+#define total 12   //总人数
+#define num 5   
+
+typedef struct Lnode
+{
+    struct Lnode *next;
+    int data;    //玩家的报号
+}Lnode;
+
+Lnode* init()     //初始化
+{
+    //先创建第一个结点
+    Lnode *p, *q, *head;
+    int i;
+    p = (Lnode *)malloc(sizeof(Lnode));
+    head = p;
+    p->data = 1;
+
+    //创建剩余结点
+    for (i = 2; i <= total; i++)
+    {
+        q = (Lnode *)malloc(sizeof(Lnode));
+        q->data = i;
+        p->next = q;
+        p = q;
+        //p = p->next;
+    }
+    p->next = head;
+    return head;
+}
+
+void gameStart(Lnode *head)    //游戏开始
+{
+    int i;
+    Lnode *q = head, *h;
+    
+    while(q->next != q)
+    {
+        for (i = 1; i < num; i++)    //第num个人出局
+        {
+            h = q;
+            q = q->next;   //h指向出局玩家的前一个人
+        }
+        printf("%d ", q->data);
+        h->next = q->next;
+        free(q);
+            
+        q = h->next;
+    }
+    printf("\n");
+}
+
+int main(void)
+{
+    Lnode *p = init();
+    gameStart(p);
+
+    return 0;
+}
