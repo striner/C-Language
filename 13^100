@@ -1,0 +1,40 @@
+#include<stdio.h>
+#include<stdlib.h>
+#define N 1000
+int main()
+{
+	int sum[N] = {0}, i, tag = 1, j , cp, k;
+	sum[999] = 1;
+	for (i = 1; i <= 100; i++)
+	{
+		for (j = N - 1; j >= N - tag; j--)//给每一位有效数组数据乘以 13
+		{
+			sum[j] *= 13;
+		}
+		cp = 0; k = N - 1;
+		cp = 0;
+		for (k = N - 1; k >= N - tag; k--)//不处理最前面的一个数
+		{
+			 int tmp;
+			 sum[k] = sum[k] + cp;
+			 cp = sum[k] / 10;
+			 sum[k] %= 10;
+			 if (k == (N - tag))
+			 {
+				 break;
+			 }
+		}
+		while (cp)//处理最前面的数，大于10，扩大有效数组位数tag
+		{
+			tag++;
+			sum[--k] = cp % 10;
+			cp /= 10;
+		}
+	}
+	for (i = N - tag; i < N; i++)
+	{
+		printf("%d", sum[i]);
+	}
+	system("pause");
+	return 0;
+}
